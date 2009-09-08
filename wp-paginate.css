@@ -1,0 +1,15 @@
+/*
+ * WP-Paginate - WordPress Pagination Function
+ * Revision: $Id$
+ * Copyright (c) 2009 Eric Martin http://www.ericmmartin.com/
+ */
+.wp-paginate {}
+.wp-paginate ol {padding:0; margin:0;}
+.wp-paginate li {display:inline; list-style:none;}
+.wp-paginate a {background:#ddd; border:1px solid #ccc; color:#666; margin-right:4px; padding:3px 6px; text-align:center; text-decoration:none;}
+.wp-paginate a:hover, .wp-paginate a:active {background:#ccc; color:#888;}
+.wp-paginate .title {color:#555; margin-right:4px;}
+.wp-paginate .gap {color:#999; margin-right:4px;}
+.wp-paginate .current {color:#fff; background:#5f87ae; border:1px solid #89adcf; margin-right:4px; padding:3px 6px;}
+.wp-paginate .page {}
+.wp-paginate .prev, .wp-paginate .next {}
