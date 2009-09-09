@@ -85,7 +85,29 @@ Example (also applies to `wp_paginate_comments()`):
 
 = How can I style the comments pagination differently than the posts pagination? =
 
-The `wp-paginate.css` file contains a section of CSS that can be used to override the global styles. Just add overrides to the `.wp-paginate-comments` styles.
+There are a number of ways to do this, but basically, you'll want to override the default styles.
+
+For example, you could do the following:
+
+1) Modify the `wp_paginate_comments()` call:
+
+	<?php if(function_exists('wp_paginate_comments')) {
+		wp_paginate_comments('before=<div class="wp-paginate-comments">');
+	} ?>
+	
+2) Add CSS to override the default element styles:
+	
+	.wp-paginate-comments {}
+	.wp-paginate-comments ol {}
+	.wp-paginate-comments li {}
+	.wp-paginate-comments a {}
+	.wp-paginate-comments a:hover, .wp-paginate-comments a:active {}
+	.wp-paginate-comments .title {}
+	.wp-paginate-comments .gap {}
+	.wp-paginate-comments .current {}
+	.wp-paginate-comments .page {}
+	.wp-paginate-comments .prev, .wp-paginate .next {}
+
 
 == Screenshots ==
 
@@ -96,7 +118,6 @@ The `wp-paginate.css` file contains a section of CSS that can be used to overrid
 
 = 1.1 =
 * Added `wp_paginate_comments()` function for pagination of post comments
-* Added `.wp-paginate-comments` CSS to override global styles 
 
 = 1.0.1 =
 * Added I18n folder and wp-paginate.pot file

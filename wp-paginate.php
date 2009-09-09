@@ -405,14 +405,7 @@ function wp_paginate($args = false) {
  */
 function wp_paginate_comments($args = false) {
 	global $wp_paginate;
-
-	$defaults = array(
-		'before' => '<div class="wp-paginate wp-paginate-comments">'
-	);
-	$args = wp_parse_args($args, $defaults);
-
 	$wp_paginate->type = 'comments';
-
 	return $wp_paginate->paginate($args);
 }
 
