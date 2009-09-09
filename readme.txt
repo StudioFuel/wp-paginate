@@ -1,8 +1,8 @@
 === WP-Paginate ===
 Contributors: emartin24 
 Donate link: http://www.ericmmartin.com/donate/
-Tags: paginate, pagination, navigation, page, wp-paginate
-Requires at least: 2.2.0
+Tags: paginate, pagination, navigation, page, wp-paginate, comments
+Requires at least: 2.2.0 (2.7.0 for comments pagination)
 Tested up to: 2.8.4
 Stable tag: 1.0.1
 	
@@ -13,6 +13,8 @@ WP-Paginate is a simple and flexible pagination plugin which provides users with
 WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation for your WordPress site.
 
 In addition to increasing the usability for your visitors, it has also been widely reported that pagination increases the SEO of your site by providing more links to your content.
+
+Starting in version 1.1, WP-Paginate can be used to paginate posts as well as comments!
 	
 == Installation ==
 
@@ -24,14 +26,23 @@ In addition to increasing the usability for your visitors, it has also been wide
 
 *Implement*
 
-1) Open the theme files where you'd like pagination to be used. Usually this is the index.php, archive.php and search.php
+For posts pagination:
+1) Open the theme files where you'd like pagination to be used. Usually this is the index.php, archive.php and search.php files.
 
 2) Replace your existing `previous_posts_link()` and `next_posts_link()` code block with the following:
 
-	<?php if(function_exists("wp_paginate")) {
+	<?php if(function_exists('wp_paginate')) {
 		wp_paginate();
 	} ?>
 
+For comments pagination:
+1) Open the theme file(s) where you'd like comments pagination to be used. Usually this is the comments.php file.
+
+2) Replace your existing `previous_comments_link()` and `next_comments_link()` code block with the following:
+
+	<?php if(function_exists('wp_paginate_comments')) {
+		wp_paginate_comments();
+	} ?>
 
 *Configure*
 
@@ -49,7 +60,7 @@ In addition to increasing the usability for your visitors, it has also been wide
 
 = How can I override the default pagination settings? =
 
-The `wp_paginate()` function takes one optional argument, in query string format, which allows you to override the global settings. The available options are:
+The `wp_paginate()` and `wp_paginate_comments()` functions each takes one optional argument, in query string format, which allows you to override the global settings. The available options are:
 
 * title - The text to display before the pagination links
 * nextpage - The text to use for the next page link
@@ -66,12 +77,15 @@ You can even control the current page and number of pages with:
 * page - The current page. This function will automatically determine the value
 * pages - The total number of pages. This function will automatically determine the value
 
-Example:
+Example (also applies to `wp_paginate_comments()`):
 
-	<?php if(function_exists("wp_paginate")) {
-		wp_paginate("range=4&anchor=2&nextpage=Next&previouspage=Previous");
+	<?php if(function_exists('wp_paginate')) {
+		wp_paginate('range=4&anchor=2&nextpage=Next&previouspage=Previous');
 	} ?>
- 
+
+= How can I style the comments pagination differently than the posts pagination? =
+
+The `wp-paginate.css` file contains a section of CSS that can be used to override the global styles. Just add overrides to the `.wp-paginate-comments` styles.
 
 == Screenshots ==
 
@@ -79,6 +93,10 @@ Example:
 2. The WP-Paginate admin settings page
 
 == Changelog ==
+
+= 1.1 =
+* Added `wp_paginate_comments()` function for pagination of post comments
+* Added `.wp-paginate-comments` CSS to override global styles 
 
 = 1.0.1 =
 * Added I18n folder and wp-paginate.pot file

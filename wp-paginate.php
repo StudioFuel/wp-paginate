@@ -2,10 +2,11 @@
 /*
 Plugin Name: WP-Paginate
 Plugin URI: http://www.ericmmartin.com/projects/wp-paginate/
-Description: A simple and flexible pagination plugin for WordPress.
+Description: A simple and flexible pagination plugin for WordPress posts and comments.
 Author: Eric Martin
-Version: 1.0.1
+Version: 1.1
 Author URI: http://www.ericmmartin.com
+Revision: $Id$
 */
 
 /*  Copyright 2009 Eric Martin (eric@ericmmartin.com)
@@ -26,9 +27,8 @@ Author URI: http://www.ericmmartin.com
 */
 
 /**
-* Set the wp-content and plugin urls/paths
-*/
-// Pre-2.6 compatibility
+ * Set the wp-content and plugin urls/paths
+ */
 if (!defined('WP_CONTENT_URL'))
 	define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
 if (!defined('WP_CONTENT_DIR'))
@@ -40,22 +40,21 @@ if (!defined('WP_PLUGIN_DIR') )
 
 if (!class_exists('WPPaginate')) {
 	class WPPaginate {
-		var $version = '1.0.1';
-		
-		//This is where the class variables go, don't forget to use @var to tell what they're for
+		var $version = '1.1';
+
 		/**
-		* @var string The options string name for this plugin
-		*/
+		 * @var string The options string name for this plugin
+		 */
 		var $optionsName = 'wp_paginate_options';
 
 		/**
-		* @var string $localizationDomain Domain used for localization
-		*/
-		var $localizationDomain = "wp_paginate";
+		 * @var string $localizationDomain Domain used for localization
+		 */
+		var $localizationDomain = 'wp_paginate';
 
 		/**
-		* @var string $pluginurl The url to this plugin
-		*/
+		 * @var string $pluginurl The url to this plugin
+		 */
 		var $pluginurl = '';
 		/**
 		* @var string $pluginpath The path to this plugin
@@ -63,19 +62,20 @@ if (!class_exists('WPPaginate')) {
 		var $pluginpath = '';
 
 		/**
-		* @var array $options Stores the options for this plugin
-		*/
+		 * @var array $options Stores the options for this plugin
+		 */
 		var $options = array();
+		
+		var $type = 'posts';
 
-		//Class Functions
 		/**
-		* PHP 4 Compatible Constructor
-		*/
+		 * PHP 4 Compatible Constructor
+		 */
 		function WPPaginate() {$this->__construct();}
 
 		/**
-		* PHP 5 Constructor
-		*/
+		 * PHP 5 Constructor
+		 */
 		function __construct() {
 			$name = dirname(plugin_basename(__FILE__));
 
@@ -99,19 +99,35 @@ if (!class_exists('WPPaginate')) {
 		/**
 		 * Pagination based on options/args
 		 */
-		function paginate($args = false) {		
+		function paginate($args = false) {
+			if ($this->type === 'comments' && !get_option('page_comments'))
+				return;
+
 			$r = wp_parse_args($args, $this->options);
 			extract($r, EXTR_SKIP);
 
 			if (!isset($page) && !isset($pages)) {
 				global $wp_query;
-			
-				$page = get_query_var('paged');
+				
+				if ($this->type === 'posts') {
+					$page = get_query_var('paged');
+					$posts_per_page = intval(get_query_var('posts_per_page'));
+					$pages = intval(ceil($wp_query->found_posts / $posts_per_page));
+				}
+				else {
+					$page = get_query_var('cpage');
+					$posts_per_page = get_option('comments_per_page');
+					$pages = intval(ceil($wp_query->comment_count / $posts_per_page));
+				}
 				$page = !empty($page) ? intval($page) : 1;
-			
-				$posts_per_page = intval(get_query_var('posts_per_page'));
-				$pages = intval(ceil($wp_query->found_posts / $posts_per_page));
 			}
+
+			$prevlink = ($this->type === 'posts')
+				? get_pagenum_link($page - 1) 
+				: get_comments_pagenum_link($page - 1);
+			$nextlink = ($this->type === 'posts')
+				? get_pagenum_link($page + 1) 
+				: get_comments_pagenum_link($page + 1);
 			
 			$output = stripslashes($before);
 			if ($pages > 1) {	
@@ -119,7 +135,7 @@ if (!class_exists('WPPaginate')) {
 				$ellipsis = "<li><span class='gap'>...</span></li>";
 			
 				if ($page > 1 && !empty($previouspage)) {
-					$output .= "<li><a href='" . get_pagenum_link($page - 1) . "' class='prev'>$previouspage</a></li>";
+					$output .= "<li><a href='$prevlink' class='prev'>$previouspage</a></li>";
 				}
 				
 				$min_links = $range * 2 + 1;
@@ -156,7 +172,7 @@ if (!class_exists('WPPaginate')) {
 				}
 			
 				if ($page < $pages && !empty($nextpage)) {
-					$output .= "<li><a href='" . get_pagenum_link($page + 1) . "' class='next'>$nextpage</a></li>";
+					$output .= "<li><a href='$nextlink' class='next'>$nextpage</a></li>";
 				}
 				$output .= "</ol>";
 			}
@@ -173,7 +189,7 @@ if (!class_exists('WPPaginate')) {
 		function paginate_loop($start, $max, $page = 0) {
 			$output = "";
 			for ($i = $start; $i <= $max; $i++) {
-				$p = get_pagenum_link($i);
+				$p = ($this->type === 'posts') ? get_pagenum_link($i) : get_comments_pagenum_link($i);
 				$output .= ($page == intval($i))
 					? "<li><span class='page current'>$i</span></li>"
 					: "<li><a href='$p' title='$i' class='page'>$i</a></li>";
@@ -194,9 +210,9 @@ if (!class_exists('WPPaginate')) {
 		}
 
 		/**
-		* Retrieves the plugin options from the database.
-		* @return array
-		*/
+		 * Retrieves the plugin options from the database.
+		 * @return array
+		 */
 		function get_options() {
 			if (!$options = get_option($this->optionsName)) {
 				$options = array(
@@ -216,23 +232,23 @@ if (!class_exists('WPPaginate')) {
 			$this->options = $options;
 		}
 		/**
-		* Saves the admin options to the database.
-		*/
+		 * Saves the admin options to the database.
+		 */
 		function save_admin_options(){
 			return update_option($this->optionsName, $this->options);
 		}
 
 		/**
-		* @desc Adds the options subpanel
-		*/
+		 * @desc Adds the options subpanel
+		 */
 		function admin_menu_link() {
 			add_options_page('WP-Paginate', 'WP-Paginate', 10, basename(__FILE__), array(&$this, 'admin_options_page'));
 			add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(&$this, 'filter_plugin_actions'), 10, 2 );
 		}
 
 		/**
-		* @desc Adds the Settings link to the plugin activate/deactivate page
-		*/
+		 * @desc Adds the Settings link to the plugin activate/deactivate page
+		 */
 		function filter_plugin_actions($links, $file) {
 			$settings_link = '<a href="options-general.php?page=' . basename(__FILE__) . '">' . __('Settings', $this->localizationDomain) . '</a>';
 			array_unshift($links, $settings_link); // before other links
@@ -241,8 +257,8 @@ if (!class_exists('WPPaginate')) {
 		}
 
 		/**
-		* Adds settings/options page
-		*/
+		 * Adds settings/options page
+		 */
 		function admin_options_page() {
 			if (isset($_POST['wp_paginate_save'])) {
 				if (wp_verify_nonce($_POST['_wpnonce'], 'wp-paginate-update-options')) {
@@ -376,10 +392,32 @@ if (class_exists('WPPaginate')) {
 	$wp_paginate = new WPPaginate();
 }
 
+/**
+ * Pagination function to use for posts
+ */
 function wp_paginate($args = false) {
 	global $wp_paginate;
 	return $wp_paginate->paginate($args);
 }
 
+/**
+ * Pagination function to use for post comments
+ */
+function wp_paginate_comments($args = false) {
+	global $wp_paginate;
 
+	$defaults = array(
+		'before' => '<div class="wp-paginate wp-paginate-comments">'
+	);
+	$args = wp_parse_args($args, $defaults);
+
+	$wp_paginate->type = 'comments';
+
+	return $wp_paginate->paginate($args);
+}
+
+/*
+ * The format of this plugin is based on the following plugin template: 
+ * http://pressography.com/plugins/wordpress-plugin-template/
+ */
 ?>
