@@ -4,7 +4,7 @@ Plugin Name: WP-Paginate
 Plugin URI: http://www.ericmmartin.com/projects/wp-paginate/
 Description: A simple and flexible pagination plugin for WordPress.
 Author: Eric Martin
-Version: 1.0
+Version: 1.0.1
 Author URI: http://www.ericmmartin.com
 */
 
@@ -40,7 +40,7 @@ if (!defined('WP_PLUGIN_DIR') )
 
 if (!class_exists('WPPaginate')) {
 	class WPPaginate {
-		var $version = '1.0';
+		var $version = '1.0.1';
 		
 		//This is where the class variables go, don't forget to use @var to tell what they're for
 		/**
@@ -80,7 +80,7 @@ if (!class_exists('WPPaginate')) {
 			$name = dirname(plugin_basename(__FILE__));
 
 			//Language Setup
-			load_plugin_textdomain($this->localizationDomain, false, "$name/lang/");
+			load_plugin_textdomain($this->localizationDomain, false, "$name/I18n/");
 
 			//"Constants" setup
 			$this->pluginurl = WP_PLUGIN_URL . "/$name/";
@@ -259,7 +259,7 @@ if (!class_exists('WPPaginate')) {
 	
 					$this->save_admin_options();
 	
-					echo '<div class="updated"><p>' . __('Success! Your changes were sucessfully saved!', $this->localizationDomain) . '</p></div>';
+					echo '<div class="updated"><p>' . __('Success! Your changes were successfully saved!', $this->localizationDomain) . '</p></div>';
 				}
 				else {
 					echo '<div class="error"><p>' . __('Whoops! There was a problem with the data you posted. Please try again.', $this->localizationDomain) . '</p></div>';
@@ -330,7 +330,7 @@ if (!class_exists('WPPaginate')) {
 					<option value="<?php echo $i; ?>" <?php echo ($i == $this->options['anchor']) ? "selected='selected'" : ""; ?>><?php echo $i; ?></option>
 				<?php endfor; ?>
 				</select>
-				<span class="description"><?php _e('The number of links to always show at begining and end of pagination. Recommneded value: 1', $this->localizationDomain); ?></span></td>
+				<span class="description"><?php _e('The number of links to always show at beginning and end of pagination. Recommended value: 1', $this->localizationDomain); ?></span></td>
 		</tr>
 		<tr valign="top">
 			<th scope="row"><?php _e('Page Gap:', $this->localizationDomain); ?></th>
@@ -348,21 +348,21 @@ if (!class_exists('WPPaginate')) {
 	</p>
 </form>
 <h2><?php _e('Need Support?', $this->localizationDomain); ?></h2>
-<p><?php _e('For questions, issues or feature requests, please post them in the <a href="http://wordpress.org/support/forum/10">WordPress Forum</a> and make sure to tag the post with wp-paginate.', $this->localizationDomain); ?></p>
+<p><?php printf(__('For questions, issues or feature requests, please post them in the %s and make sure to tag the post with wp-paginate.', $this->localizationDomain), '<a href="http://wordpress.org/tags/wp-paginate?forum_id=10#postform">WordPress Forum</a>'); ?></p>
 <h2><?php _e('Like To Contribute?', $this->localizationDomain); ?></h2>
 <p><?php _e('If you would like to contribute, the following is a list of ways you can help:', $this->localizationDomain); ?></p>
 <ul>
-	<li>&raquo; <?php _e('Translate WP-Paginate into your language.', $this->localizationDomain); ?></li>
-	<li>&raquo; <?php _e('Blog about or link to WP-Paginate so others can find out about it.', $this->localizationDomain); ?></li>
+	<li>&raquo; <?php _e('Translate WP-Paginate into your language', $this->localizationDomain); ?></li>
+	<li>&raquo; <?php _e('Blog about or link to WP-Paginate so others can find out about it', $this->localizationDomain); ?></li>
 	<li>&raquo; <?php _e('Report issues, provide feedback, request features, etc.', $this->localizationDomain); ?></li>
-	<li>&raquo; <a href="http://wordpress.org/extend/plugins/wp-paginate/"><?php _e('Rate WP-Paginate on the WordPress Plugins Page', $this->localizationDomain); ?></a>.</li>
-	<li>&raquo; <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KUL9VQ6U5VYCE&lc=US&item_name=Eric%20Martin%20%28ericmmartin%2ecom%29&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"><?php _e('Make a donation', $this->localizationDomain); ?></a>.</li>
+	<li>&raquo; <a href="http://wordpress.org/extend/plugins/wp-paginate/"><?php _e('Rate WP-Paginate on the WordPress Plugins Page', $this->localizationDomain); ?></a></li>
+	<li>&raquo; <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KUL9VQ6U5VYCE&lc=US&item_name=Eric%20Martin%20%28ericmmartin%2ecom%29&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"><?php _e('Make a donation', $this->localizationDomain); ?></a></li>
 </ul>
 <h2><?php _e('Other Links', $this->localizationDomain); ?></h2>
 <ul>
-	<li>&raquo; <a href="http://twitter.com/ericmmartin">@ericmmartin <?php _e('on Twitter', $this->localizationDomain); ?></a></li>
-	<li>&raquo; <a href="http://www.ericmmartin.com"><?php _e('My Blog', $this->localizationDomain); ?></a></li>
-	<li>&raquo; <a href="http://www.ericmmartin.com/projects/smcf/"><?php _e('SimpleModal Contact Form (SMCF) - WordPress Plugin', $this->localizationDomain); ?></a></li>
+	<li>&raquo; <a href="http://twitter.com/ericmmartin">@ericmmartin</a> on Twitter</li>
+	<li>&raquo; <a href="http://www.ericmmartin.com">EricMMartin.com</a></li>
+	<li>&raquo; <a href="http://www.ericmmartin.com/projects/smcf/">SimpleModal Contact Form (SMCF) - WordPress Plugin</a></li>
 </ul>
 </div>
 

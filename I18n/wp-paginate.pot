@@ -1,0 +1,172 @@
+# POT file for WP-Paginate.
+# Copyright (C) 2009 Eric Martin
+# This file is distributed under the same license as the WP-Paginate package.
+# Eric Martin <eric@ericmmartin.com>, 2009.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-paginate\n"
+"POT-Creation-Date: 2009-09-09 02:54+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: wp-paginate.php:237
+msgid "Settings"
+msgstr ""
+
+#: wp-paginate.php:262
+msgid "Success! Your changes were successfully saved!"
+msgstr ""
+
+#: wp-paginate.php:265
+msgid "Whoops! There was a problem with the data you posted. Please try again."
+msgstr ""
+
+#: wp-paginate.php:277
+msgid "Pagination Text:"
+msgstr ""
+
+#: wp-paginate.php:279
+msgid "The text to display before the list of pages."
+msgstr ""
+
+#: wp-paginate.php:282
+msgid "Previous Page Text:"
+msgstr ""
+
+#: wp-paginate.php:284
+msgid "The text to display for the previous page link."
+msgstr ""
+
+#: wp-paginate.php:287
+msgid "Next Page Text:"
+msgstr ""
+
+#: wp-paginate.php:289
+msgid "The text to display for the next page link."
+msgstr ""
+
+#: wp-paginate.php:293
+msgid "Advanced Settings"
+msgstr ""
+
+#: wp-paginate.php:296
+msgid "Before Markup:"
+msgstr ""
+
+#: wp-paginate.php:298
+msgid "The HTML markup to display before the pagination code."
+msgstr ""
+
+#: wp-paginate.php:301
+msgid "After Markup:"
+msgstr ""
+
+#: wp-paginate.php:303
+msgid "The HTML markup to display after the pagination code."
+msgstr ""
+
+#: wp-paginate.php:306
+msgid "Markup Display:"
+msgstr ""
+
+#: wp-paginate.php:308
+msgid "Always show Markup, even when the page list is empty?"
+msgstr ""
+
+#: wp-paginate.php:311
+msgid "CSS File:"
+msgstr ""
+
+#: wp-paginate.php:313
+msgid "Deselect this option to prevent loading wp-paginate.css."
+msgstr ""
+
+#: wp-paginate.php:316
+msgid "Page Range:"
+msgstr ""
+
+#: wp-paginate.php:323
+msgid ""
+"The number of page links to show before and after the current page. "
+"Recommended value: 3"
+msgstr ""
+
+#: wp-paginate.php:326
+msgid "Page Anchors:"
+msgstr ""
+
+#: wp-paginate.php:333
+msgid ""
+"The number of links to always show at beginning and end of pagination. "
+"Recommended value: 1"
+msgstr ""
+
+#: wp-paginate.php:336
+msgid "Page Gap:"
+msgstr ""
+
+#: wp-paginate.php:343
+msgid ""
+"The minimum number of pages in a gap before ellipses (...) are added. "
+"Recommended value: 3"
+msgstr ""
+
+#: wp-paginate.php:350
+msgid "Need Support?"
+msgstr ""
+
+#: wp-paginate.php:351
+msgid ""
+"For questions, issues or feature requests, please post them in the %s and "
+"make sure to tag the post with wp-paginate."
+msgstr ""
+
+#: wp-paginate.php:352
+msgid "Like To Contribute?"
+msgstr ""
+
+#: wp-paginate.php:353
+msgid ""
+"If you would like to contribute, the following is a list of ways you can "
+"help:"
+msgstr ""
+
+#: wp-paginate.php:355
+msgid "Translate WP-Paginate into your language"
+msgstr ""
+
+#: wp-paginate.php:356
+msgid "Blog about or link to WP-Paginate so others can find out about it"
+msgstr ""
+
+#: wp-paginate.php:357
+msgid "Report issues, provide feedback, request features, etc."
+msgstr ""
+
+#: wp-paginate.php:358
+msgid "Rate WP-Paginate on the WordPress Plugins Page"
+msgstr ""
+
+#: wp-paginate.php:359
+msgid "Make a donation"
+msgstr ""
+
+#: wp-paginate.php:361
+msgid "Other Links"
+msgstr ""
+
+#: wp-paginate.php:364
+msgid "My Blog"
+msgstr ""
+
+#. Description of an extension
+msgid "A simple and flexible pagination plugin for WordPress."
+msgstr ""
+
