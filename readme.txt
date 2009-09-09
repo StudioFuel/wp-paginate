@@ -28,7 +28,10 @@ In addition to increasing the usability for your visitors, it has also been wide
 
 2) Replace your existing `previous_posts_link()` and `next_posts_link()` code block with the following:
 
-	<?php if(function_exists("wp_paginate")) {wp_paginate();} ?>
+	<?php if(function_exists("wp_paginate")) {
+		wp_paginate();
+	} ?>
+
 
 *Configure*
 
@@ -44,7 +47,7 @@ In addition to increasing the usability for your visitors, it has also been wide
 
 == Frequently Asked Questions ==
 
-=How can I override the default pagination settings?=
+= How can I override the default pagination settings? =
 
 The `wp_paginate()` function takes one optional argument, in query string format, which allows you to override the global settings. The available options are:
 
