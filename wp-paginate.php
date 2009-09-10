@@ -4,7 +4,7 @@ Plugin Name: WP-Paginate
 Plugin URI: http://www.ericmmartin.com/projects/wp-paginate/
 Description: A simple and flexible pagination plugin for WordPress posts and comments.
 Author: Eric Martin
-Version: 1.1
+Version: 1.1.1
 Author URI: http://www.ericmmartin.com
 Revision: $Id$
 */
@@ -40,7 +40,7 @@ if (!defined('WP_PLUGIN_DIR') )
 
 if (!class_exists('WPPaginate')) {
 	class WPPaginate {
-		var $version = '1.1';
+		var $version = '1.1.1';
 
 		/**
 		 * @var string The options string name for this plugin
@@ -131,7 +131,8 @@ if (!class_exists('WPPaginate')) {
 			
 			$output = stripslashes($before);
 			if ($pages > 1) {	
-				$output .= "<ol><li><span class='title'>$title</span></li>";
+				$output .= sprintf('<ol class="wp-paginate%s">', ($this->type === 'posts') ? '' : ' wp-paginate-comments');
+				$output .= "<li><span class='title'>$title</span></li>";
 				$ellipsis = "<li><span class='gap'>...</span></li>";
 			
 				if ($page > 1 && !empty($previouspage)) {
@@ -220,7 +221,7 @@ if (!class_exists('WPPaginate')) {
 					'nextpage' => '&raquo;',
 					'previouspage' => '&laquo;',
 					'css' => true,
-					'before' => '<div class="wp-paginate">',
+					'before' => '<div class="navigation">',
 					'after' => '</div>',
 					'empty' => true,
 					'range' => 3,

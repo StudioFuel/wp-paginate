@@ -4,7 +4,7 @@ Donate link: http://www.ericmmartin.com/donate/
 Tags: paginate, pagination, navigation, page, wp-paginate, comments
 Requires at least: 2.2.0 (2.7.0 for comments pagination)
 Tested up to: 2.8.4
-Stable tag: 1.1
+Stable tag: 1.1.1
 	
 WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
 
@@ -14,7 +14,7 @@ WP-Paginate is a simple and flexible pagination plugin which provides users with
 
 In addition to increasing the user experience for your visitors, it has also been widely reported that pagination increases the SEO of your site by providing more links to your content.
 
-Starting in version 1.1, WP-Paginate can be used to paginate posts as well as post comments!
+Starting in version 1.1, WP-Paginate can also be used to paginate post comments!
 	
 == Installation ==
 
@@ -35,6 +35,7 @@ For posts pagination:
 		wp_paginate();
 	} ?>
 
+
 For comments pagination:
 1) Open the theme file(s) where you'd like comments pagination to be used. Usually this is the comments.php file.
 
@@ -43,6 +44,7 @@ For comments pagination:
 	<?php if(function_exists('wp_paginate_comments')) {
 		wp_paginate_comments();
 	} ?>
+
 
 *Configure*
 
@@ -54,7 +56,14 @@ For comments pagination:
 * Add your custom CSS to your theme's `styles.css`
 * Modify the `wp-paginate.css` file in the wp-paginate plugin directory
 
-*Note:* The first two options will ensure that WP-Paginate updates will not overwrite your custom styles.  
+*Note:* The first two options will ensure that WP-Paginate updates will not overwrite your custom styles.
+
+*Upgrading*
+
+To 1.1.1:
+
+* Update WP-Paginate settings, change `Before Markup` to <div class="navigation">
+* Update `wp-paginate.css`, change `.wp-paginate ol` to `.wp-paginate`
 
 == Frequently Asked Questions ==
 
@@ -83,31 +92,13 @@ Example (also applies to `wp_paginate_comments()`):
 		wp_paginate('range=4&anchor=2&nextpage=Next&previouspage=Previous');
 	} ?>
 
+
+
 = How can I style the comments pagination differently than the posts pagination? =
 
-There are a number of ways to do this, but basically, you'll want to override the default styles.
+When calling `wp_paginate_comments()`, WP-Paginate adds an extra class to the `ol` element, `wp-paginate-comments`.
 
-For example, you could do the following:
-
-1) Modify the `wp_paginate_comments()` call:
-
-	<?php if(function_exists('wp_paginate_comments')) {
-		wp_paginate_comments('before=<div class="wp-paginate-comments">');
-	} ?>
-	
-2) Add CSS to override the default element styles:
-	
-	.wp-paginate-comments {}
-	.wp-paginate-comments ol {}
-	.wp-paginate-comments li {}
-	.wp-paginate-comments a {}
-	.wp-paginate-comments a:hover, .wp-paginate-comments a:active {}
-	.wp-paginate-comments .title {}
-	.wp-paginate-comments .gap {}
-	.wp-paginate-comments .current {}
-	.wp-paginate-comments .page {}
-	.wp-paginate-comments .prev, .wp-paginate .next {}
-
+This allows you to use the `.wp-paginate-comments` styles, already in `wp-paginate.css`, to override the default styles.
 
 == Screenshots ==
 
@@ -115,6 +106,12 @@ For example, you could do the following:
 2. The WP-Paginate admin settings page
 
 == Changelog ==
+
+= 1.1.1 =
+* Changed output to include `wp-paginate` and `wp-paginate-comments` class names on the `ol` element
+* Changed the `before` option from `<div class="wp-paginate">` to `<div class="navigation">`
+* Added `.wp-paginate-comments` styles to `wp-paginate.css`
+* Changed styles in `wp-paginate.css`
 
 = 1.1 =
 * Added `wp_paginate_comments()` function for pagination of post comments
