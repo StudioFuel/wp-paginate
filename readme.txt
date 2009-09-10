@@ -4,17 +4,17 @@ Donate link: http://www.ericmmartin.com/donate/
 Tags: paginate, pagination, navigation, page, wp-paginate, comments
 Requires at least: 2.2.0 (2.7.0 for comments pagination)
 Tested up to: 2.8.4
-Stable tag: 1.0.1
+Stable tag: 1.1
 	
-WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation for your WordPress site.
+WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
 
 == Description ==
 
-WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation for your WordPress site.
+WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
 
-In addition to increasing the usability for your visitors, it has also been widely reported that pagination increases the SEO of your site by providing more links to your content.
+In addition to increasing the user experience for your visitors, it has also been widely reported that pagination increases the SEO of your site by providing more links to your content.
 
-Starting in version 1.1, WP-Paginate can be used to paginate posts as well as comments!
+Starting in version 1.1, WP-Paginate can be used to paginate posts as well as post comments!
 	
 == Installation ==
 

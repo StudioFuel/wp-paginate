@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-paginate\n"
-"POT-Creation-Date: 2009-09-09 02:54+0000\n"
+"POT-Creation-Date: 2009-09-10 03:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,157 +16,154 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-paginate.php:237
+#: wp-paginate.php:253
 msgid "Settings"
 msgstr ""
 
-#: wp-paginate.php:262
+#: wp-paginate.php:278
 msgid "Success! Your changes were successfully saved!"
 msgstr ""
 
-#: wp-paginate.php:265
+#: wp-paginate.php:281
 msgid "Whoops! There was a problem with the data you posted. Please try again."
 msgstr ""
 
-#: wp-paginate.php:277
+#: wp-paginate.php:293
 msgid "Pagination Text:"
 msgstr ""
 
-#: wp-paginate.php:279
+#: wp-paginate.php:295
 msgid "The text to display before the list of pages."
 msgstr ""
 
-#: wp-paginate.php:282
+#: wp-paginate.php:298
 msgid "Previous Page Text:"
 msgstr ""
 
-#: wp-paginate.php:284
+#: wp-paginate.php:300
 msgid "The text to display for the previous page link."
 msgstr ""
 
-#: wp-paginate.php:287
+#: wp-paginate.php:303
 msgid "Next Page Text:"
 msgstr ""
 
-#: wp-paginate.php:289
+#: wp-paginate.php:305
 msgid "The text to display for the next page link."
 msgstr ""
 
-#: wp-paginate.php:293
+#: wp-paginate.php:309
 msgid "Advanced Settings"
 msgstr ""
 
-#: wp-paginate.php:296
+#: wp-paginate.php:312
 msgid "Before Markup:"
 msgstr ""
 
-#: wp-paginate.php:298
+#: wp-paginate.php:314
 msgid "The HTML markup to display before the pagination code."
 msgstr ""
 
-#: wp-paginate.php:301
+#: wp-paginate.php:317
 msgid "After Markup:"
 msgstr ""
 
-#: wp-paginate.php:303
+#: wp-paginate.php:319
 msgid "The HTML markup to display after the pagination code."
 msgstr ""
 
-#: wp-paginate.php:306
+#: wp-paginate.php:322
 msgid "Markup Display:"
 msgstr ""
 
-#: wp-paginate.php:308
+#: wp-paginate.php:324
 msgid "Always show Markup, even when the page list is empty?"
 msgstr ""
 
-#: wp-paginate.php:311
+#: wp-paginate.php:327
 msgid "CSS File:"
 msgstr ""
 
-#: wp-paginate.php:313
+#: wp-paginate.php:329
 msgid "Deselect this option to prevent loading wp-paginate.css."
 msgstr ""
 
-#: wp-paginate.php:316
+#: wp-paginate.php:332
 msgid "Page Range:"
 msgstr ""
 
-#: wp-paginate.php:323
+#: wp-paginate.php:339
 msgid ""
 "The number of page links to show before and after the current page. "
 "Recommended value: 3"
 msgstr ""
 
-#: wp-paginate.php:326
+#: wp-paginate.php:342
 msgid "Page Anchors:"
 msgstr ""
 
-#: wp-paginate.php:333
+#: wp-paginate.php:349
 msgid ""
 "The number of links to always show at beginning and end of pagination. "
 "Recommended value: 1"
 msgstr ""
 
-#: wp-paginate.php:336
+#: wp-paginate.php:352
 msgid "Page Gap:"
 msgstr ""
 
-#: wp-paginate.php:343
+#: wp-paginate.php:359
 msgid ""
 "The minimum number of pages in a gap before ellipses (...) are added. "
 "Recommended value: 3"
 msgstr ""
 
-#: wp-paginate.php:350
+#: wp-paginate.php:366
 msgid "Need Support?"
 msgstr ""
 
-#: wp-paginate.php:351
+#: wp-paginate.php:367
+#, php-format
 msgid ""
 "For questions, issues or feature requests, please post them in the %s and "
 "make sure to tag the post with wp-paginate."
 msgstr ""
 
-#: wp-paginate.php:352
+#: wp-paginate.php:368
 msgid "Like To Contribute?"
 msgstr ""
 
-#: wp-paginate.php:353
+#: wp-paginate.php:369
 msgid ""
 "If you would like to contribute, the following is a list of ways you can "
 "help:"
 msgstr ""
 
-#: wp-paginate.php:355
+#: wp-paginate.php:371
 msgid "Translate WP-Paginate into your language"
 msgstr ""
 
-#: wp-paginate.php:356
+#: wp-paginate.php:372
 msgid "Blog about or link to WP-Paginate so others can find out about it"
 msgstr ""
 
-#: wp-paginate.php:357
+#: wp-paginate.php:373
 msgid "Report issues, provide feedback, request features, etc."
 msgstr ""
 
-#: wp-paginate.php:358
+#: wp-paginate.php:374
 msgid "Rate WP-Paginate on the WordPress Plugins Page"
 msgstr ""
 
-#: wp-paginate.php:359
+#: wp-paginate.php:375
 msgid "Make a donation"
 msgstr ""
 
-#: wp-paginate.php:361
+#: wp-paginate.php:377
 msgid "Other Links"
 msgstr ""
 
-#: wp-paginate.php:364
-msgid "My Blog"
-msgstr ""
-
 #. Description of an extension
-msgid "A simple and flexible pagination plugin for WordPress."
+msgid ""
+"A simple and flexible pagination plugin for WordPress posts and comments."
 msgstr ""
-
