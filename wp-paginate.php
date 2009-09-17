@@ -40,6 +40,9 @@ if (!defined('WP_PLUGIN_DIR') )
 
 if (!class_exists('WPPaginate')) {
 	class WPPaginate {
+		/**
+		 * @var string The plugin version
+		 */
 		var $version = '1.1.1';
 
 		/**
@@ -57,8 +60,8 @@ if (!class_exists('WPPaginate')) {
 		 */
 		var $pluginurl = '';
 		/**
-		* @var string $pluginpath The path to this plugin
-		*/
+		 * @var string $pluginpath The path to this plugin
+		 */
 		var $pluginpath = '';
 
 		/**
