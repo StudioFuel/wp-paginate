@@ -3,7 +3,7 @@ Contributors: emartin24
 Donate link: http://www.ericmmartin.com/donate/
 Tags: paginate, pagination, navigation, page, wp-paginate, comments
 Requires at least: 2.2.0 (2.7.0 for comments pagination)
-Tested up to: 2.8.4
+Tested up to: 2.9.2
 Stable tag: 1.1.1
 	
 WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
@@ -71,12 +71,12 @@ To 1.1.1:
 
 The `wp_paginate()` and `wp_paginate_comments()` functions each takes one optional argument, in query string format, which allows you to override the global settings. The available options are:
 
-* title - The text to display before the pagination links
-* nextpage - The text to use for the next page link
-* previouspage - The text to use for the previous page link
-* before - The HTML or text to add before the pagination links
-* after - The HTML or text to add after the pagination links
-* empty - Display the markup code even when the page list is empty
+* title - The text/HTML to display before the pagination links
+* nextpage - The text/HTML to use for the next page link
+* previouspage - The text/HTML to use for the previous page link
+* before - The text/HTML to add before the pagination links
+* after - The text/HTML to add after the pagination links
+* empty - Display before markup and after markup code even when the page list is empty
 * range - The number of page links to show before and after the current page
 * anchor - The number of links to always show at beginning and end of pagination
 * gap - The minimum number of pages before a gap is replaced with ellipses (...)
@@ -106,6 +106,11 @@ This allows you to use the `.wp-paginate-comments` styles, already in `wp-pagina
 2. The WP-Paginate admin settings page
 
 == Changelog ==
+
+= 1.1.2 =
+* Fixed comment pagination bug (nested comments caused blank page)
+* Enabled HTML for Pagination Label, Previous Page, and Next Page
+* Localization changes were made, Translations need to be updated
 
 = 1.1.1 =
 * Changed output to include `wp-paginate` and `wp-paginate-comments` class names on the `ol` element

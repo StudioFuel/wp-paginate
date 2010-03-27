@@ -4,12 +4,12 @@ Plugin Name: WP-Paginate
 Plugin URI: http://www.ericmmartin.com/projects/wp-paginate/
 Description: A simple and flexible pagination plugin for WordPress posts and comments.
 Author: Eric Martin
-Version: 1.1.1
+Version: 1.1.2
 Author URI: http://www.ericmmartin.com
 Revision: $Id$
 */
 
-/*  Copyright 2009 Eric Martin (eric@ericmmartin.com)
+/*  Copyright 2010 Eric Martin (eric@ericmmartin.com)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ if (!class_exists('WPPaginate')) {
 		/**
 		 * @var string The plugin version
 		 */
-		var $version = '1.1.1';
+		var $version = '1.1.2';
 
 		/**
 		 * @var string The options string name for this plugin
@@ -68,7 +68,7 @@ if (!class_exists('WPPaginate')) {
 		 * @var array $options Stores the options for this plugin
 		 */
 		var $options = array();
-		
+
 		var $type = 'posts';
 
 		/**
@@ -94,7 +94,7 @@ if (!class_exists('WPPaginate')) {
 
 			//Actions
 			add_action('admin_menu', array(&$this, 'admin_menu_link'));
-			
+
 			if ($this->options['css'])
 				add_action('wp_print_styles', array(&$this, 'wp_paginate_css'));
 		}
@@ -111,16 +111,28 @@ if (!class_exists('WPPaginate')) {
 
 			if (!isset($page) && !isset($pages)) {
 				global $wp_query;
-				
+
 				if ($this->type === 'posts') {
 					$page = get_query_var('paged');
 					$posts_per_page = intval(get_query_var('posts_per_page'));
 					$pages = intval(ceil($wp_query->found_posts / $posts_per_page));
 				}
 				else {
+					global $post, $wpdb;
+					/*
+					 * Do not include nested comments
+					 * Thanks to jeffreyalew for the patch
+					 */ 
+					$comments = $wpdb->get_var("
+						SELECT COUNT(*)
+						FROM $wpdb->comments
+						WHERE comment_approved = '1'
+						AND comment_parent = '0'
+						AND comment_post_ID = $post->ID
+					");
 					$page = get_query_var('cpage');
-					$posts_per_page = get_option('comments_per_page');
-					$pages = intval(ceil($wp_query->comment_count / $posts_per_page));
+					$comments_per_page = get_option('comments_per_page');
+					$pages = intval(ceil($comments / $comments_per_page));
 				}
 				$page = !empty($page) ? intval($page) : 1;
 			}
@@ -131,23 +143,23 @@ if (!class_exists('WPPaginate')) {
 			$nextlink = ($this->type === 'posts')
 				? get_pagenum_link($page + 1) 
 				: get_comments_pagenum_link($page + 1);
-			
+
 			$output = stripslashes($before);
 			if ($pages > 1) {	
 				$output .= sprintf('<ol class="wp-paginate%s">', ($this->type === 'posts') ? '' : ' wp-paginate-comments');
-				$output .= "<li><span class='title'>$title</span></li>";
+				$output .= sprintf('<li><span class="title">%s</span></li>', stripslashes($title));
 				$ellipsis = "<li><span class='gap'>...</span></li>";
-			
+
 				if ($page > 1 && !empty($previouspage)) {
-					$output .= "<li><a href='$prevlink' class='prev'>$previouspage</a></li>";
+					$output .= sprintf('<li><a href="%s" class="prev">%s</a></li>', $prevlink, stripslashes($previouspage));
 				}
-				
+
 				$min_links = $range * 2 + 1;
 				$block_min = min($page - $range, $pages - $min_links);
 				$block_high = max($page + $range, $min_links);
 				$left_gap = (($block_min - $anchor - $gap) > 0) ? true : false;
 				$right_gap = (($block_high + $anchor + $gap) < $pages) ? true : false;
-			
+
 				if ($left_gap && !$right_gap) {
 					$output .= sprintf('%s%s%s',
 						$this->paginate_loop(1, $anchor),
@@ -174,19 +186,19 @@ if (!class_exists('WPPaginate')) {
 				else {
 					$output .= $this->paginate_loop(1, $pages, $page);
 				}
-			
+
 				if ($page < $pages && !empty($nextpage)) {
-					$output .= "<li><a href='$nextlink' class='next'>$nextpage</a></li>";
+					$output .= sprintf('<li><a href="%s" class="next">%s</a></li>', $nextlink, stripslashes($nextpage));
 				}
 				$output .= "</ol>";
 			}
 			$output .= stripslashes($after);
-			
+
 			if ($pages > 1 || $empty) {
 				echo $output;
 			}
 		}
-		
+
 		/**
 		 * Helper function for pagination which builds the page links.
 		 */
@@ -200,7 +212,7 @@ if (!class_exists('WPPaginate')) {
 			}
 			return $output;
 		}
-		
+
 		function wp_paginate_css() {
 			$css = "";
 			$name = "wp-paginate.css";
@@ -276,9 +288,9 @@ if (!class_exists('WPPaginate')) {
 					$this->options['range'] = intval($_POST['range']);
 					$this->options['anchor'] = intval($_POST['anchor']);
 					$this->options['gap'] = intval($_POST['gap']);
-	
+
 					$this->save_admin_options();
-	
+
 					echo '<div class="updated"><p>' . __('Success! Your changes were successfully saved!', $this->localizationDomain) . '</p></div>';
 				}
 				else {
@@ -294,19 +306,19 @@ if (!class_exists('WPPaginate')) {
 <?php wp_nonce_field('wp-paginate-update-options'); ?>
 	<table class="form-table">
 		<tr valign="top">
-			<th scope="row"><?php _e('Pagination Text:', $this->localizationDomain); ?></th>
-			<td><input name="title" type="text" id="title" size="40" value="<?php echo htmlspecialchars($this->options['title']); ?>"/>
-			<span class="description"><?php _e('The text to display before the list of pages.', $this->localizationDomain); ?></span></td>
+			<th scope="row"><?php _e('Pagination Label:', $this->localizationDomain); ?></th>
+			<td><input name="title" type="text" id="title" size="40" value="<?php echo stripslashes(htmlspecialchars($this->options['title'])); ?>"/>
+			<span class="description"><?php _e('The text/HTML to display before the list of pages.', $this->localizationDomain); ?></span></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><?php _e('Previous Page Text:', $this->localizationDomain); ?></th>
-			<td><input name="previouspage" type="text" id="previouspage" size="40" value="<?php echo htmlspecialchars($this->options['previouspage']); ?>"/>
-			<span class="description"><?php _e('The text to display for the previous page link.', $this->localizationDomain); ?></span></td>
+			<th scope="row"><?php _e('Previous Page:', $this->localizationDomain); ?></th>
+			<td><input name="previouspage" type="text" id="previouspage" size="40" value="<?php echo stripslashes(htmlspecialchars($this->options['previouspage'])); ?>"/>
+			<span class="description"><?php _e('The text/HTML to display for the previous page link.', $this->localizationDomain); ?></span></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><?php _e('Next Page Text:', $this->localizationDomain); ?></th>
-			<td><input name="nextpage" type="text" id="nextpage" size="40" value="<?php echo htmlspecialchars($this->options['nextpage']); ?>"/>
-			<span class="description"><?php _e('The text to display for the next page link.', $this->localizationDomain); ?></span></td>
+			<th scope="row"><?php _e('Next Page:', $this->localizationDomain); ?></th>
+			<td><input name="nextpage" type="text" id="nextpage" size="40" value="<?php echo stripslashes(htmlspecialchars($this->options['nextpage'])); ?>"/>
+			<span class="description"><?php _e('The text/HTML to display for the next page link.', $this->localizationDomain); ?></span></td>
 		</tr>
 	</table>
 	<p>&nbsp;</p>
@@ -325,12 +337,12 @@ if (!class_exists('WPPaginate')) {
 		<tr valign="top">
 			<th scope="row"><?php _e('Markup Display:', $this->localizationDomain); ?></th>
 			<td><label for="empty">
-				<input type="checkbox" id="empty" name="empty" <?php echo ($this->options['empty'] === true) ? "checked='checked'" : ""; ?>/> <?php _e('Always show Markup, even when the page list is empty?', $this->localizationDomain); ?></label></td>
+				<input type="checkbox" id="empty" name="empty" <?php echo ($this->options['empty'] === true) ? "checked='checked'" : ""; ?>/> <?php _e('Show Before Markup and After Markup, even if the page list is empty?', $this->localizationDomain); ?></label></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><?php _e('CSS File:', $this->localizationDomain); ?></th>
+			<th scope="row"><?php _e('WP-Paginate CSS File:', $this->localizationDomain); ?></th>
 			<td><label for="css">
-				<input type="checkbox" id="css" name="css" <?php echo ($this->options['css'] === true) ? "checked='checked'" : ""; ?>/> <?php _e('Deselect this option to prevent loading wp-paginate.css.', $this->localizationDomain); ?></label></td>
+				<input type="checkbox" id="css" name="css" <?php echo ($this->options['css'] === true) ? "checked='checked'" : ""; ?>/> <?php _e('Include the default stylesheet wp-paginate.css?', $this->localizationDomain); ?></label></td>
 		</tr>
 		<tr valign="top">
 			<th scope="row"><?php _e('Page Range:', $this->localizationDomain); ?></th>
@@ -360,7 +372,7 @@ if (!class_exists('WPPaginate')) {
 					<option value="<?php echo $i; ?>" <?php echo ($i == $this->options['gap']) ? "selected='selected'" : ""; ?>><?php echo $i; ?></option>
 				<?php endfor; ?>
 				</select>
-				<span class="description"><?php _e('The minimum number of pages in a gap before ellipses (...) are added. Recommended value: 3', $this->localizationDomain); ?></span></td>
+				<span class="description"><?php _e('The minimum number of pages in a gap before an ellipsis (...) is added. Recommended value: 3', $this->localizationDomain); ?></span></td>
 		</tr>
 	</table>
 	<p class="submit">
@@ -383,6 +395,7 @@ if (!class_exists('WPPaginate')) {
 	<li>&raquo; <a href="http://twitter.com/ericmmartin">@ericmmartin</a> on Twitter</li>
 	<li>&raquo; <a href="http://www.ericmmartin.com">EricMMartin.com</a></li>
 	<li>&raquo; <a href="http://www.ericmmartin.com/projects/smcf/">SimpleModal Contact Form (SMCF) - WordPress Plugin</a></li>
+	<li>&raquo; <a href="http://www.ericmmartin.com/projects/simplemodal-login/">SimpleModal Login - WordPress Plugin</a></li>
 </ul>
 </div>
 
