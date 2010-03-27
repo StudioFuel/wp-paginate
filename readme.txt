@@ -4,7 +4,7 @@ Donate link: http://www.ericmmartin.com/donate/
 Tags: paginate, pagination, navigation, page, wp-paginate, comments
 Requires at least: 2.2.0 (2.7.0 for comments pagination)
 Tested up to: 2.9.2
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 	
 WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
 
@@ -60,7 +60,7 @@ For comments pagination:
 
 *Upgrading*
 
-To 1.1.1:
+To 1.1.1+:
 
 * Update WP-Paginate settings, change `Before Markup` to <div class="navigation">
 * Update `wp-paginate.css`, change `.wp-paginate ol` to `.wp-paginate`
@@ -79,7 +79,7 @@ The `wp_paginate()` and `wp_paginate_comments()` functions each takes one option
 * empty - Display before markup and after markup code even when the page list is empty
 * range - The number of page links to show before and after the current page
 * anchor - The number of links to always show at beginning and end of pagination
-* gap - The minimum number of pages before a gap is replaced with ellipses (...)
+* gap - The minimum number of pages before a gap is replaced with an ellipsis (...)
 
 You can even control the current page and number of pages with:
 
