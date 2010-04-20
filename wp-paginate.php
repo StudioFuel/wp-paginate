@@ -342,7 +342,7 @@ if (!class_exists('WPPaginate')) {
 		<tr valign="top">
 			<th scope="row"><?php _e('WP-Paginate CSS File:', $this->localizationDomain); ?></th>
 			<td><label for="css">
-				<input type="checkbox" id="css" name="css" <?php echo ($this->options['css'] === true) ? "checked='checked'" : ""; ?>/> <?php _e('Include the default stylesheet wp-paginate.css?', $this->localizationDomain); ?></label></td>
+				<input type="checkbox" id="css" name="css" <?php echo ($this->options['css'] === true) ? "checked='checked'" : ""; ?>/> <?php printf(__('Include the default stylesheet wp-paginate.css? WP-Paginate will first look for <code>wp-paginate.css</code> in your theme directory (<code>themes/%s</code>).', $this->localizationDomain), get_current_theme()); ?></label></td>
 		</tr>
 		<tr valign="top">
 			<th scope="row"><?php _e('Page Range:', $this->localizationDomain); ?></th>
