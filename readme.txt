@@ -1,9 +1,9 @@
 === WP-Paginate ===
 Contributors: emartin24 
 Donate link: http://www.ericmmartin.com/donate/
-Tags: paginate, pagination, navigation, page, wp-paginate, comments
+Tags: paginate, pagination, navigation, page, wp-paginate, comments, rtl, seo, usability
 Requires at least: 2.2.0 (2.7.0 for comments pagination)
-Tested up to: 2.9.2
+Tested up to: 3.0.1
 Stable tag: 1.1.2
 	
 WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
@@ -27,7 +27,7 @@ Starting in version 1.1, WP-Paginate can also be used to paginate post comments!
 *Implement*
 
 For posts pagination:
-1) Open the theme files where you'd like pagination to be used. Usually this is the index.php, archive.php and search.php files.
+1) Open the theme files where you'd like pagination to be used. Usually this is the `loop.php` file. For older version of WordPress, you may need to update the `index.php`, `archive.php` and `search.php` files.
 
 2) Replace your existing `previous_posts_link()` and `next_posts_link()` code block with the following:
 
@@ -37,7 +37,7 @@ For posts pagination:
 
 
 For comments pagination:
-1) Open the theme file(s) where you'd like comments pagination to be used. Usually this is the comments.php file.
+1) Open the theme file(s) where you'd like comments pagination to be used. Usually this is the `comments.php` file.
 
 2) Replace your existing `previous_comments_link()` and `next_comments_link()` code block with the following:
 
@@ -106,6 +106,9 @@ This allows you to use the `.wp-paginate-comments` styles, already in `wp-pagina
 2. The WP-Paginate admin settings page
 
 == Changelog ==
+
+= 1.2 =
+* Added RTL language support
 
 = 1.1.2 =
 * Fixed comment pagination bug (nested comments caused blank page)
