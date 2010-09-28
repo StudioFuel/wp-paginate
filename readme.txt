@@ -15,6 +15,8 @@ WP-Paginate is a simple and flexible pagination plugin which provides users with
 In addition to increasing the user experience for your visitors, it has also been widely reported that pagination increases the SEO of your site by providing more links to your content.
 
 Starting in version 1.1, WP-Paginate can also be used to paginate post comments!
+
+Translations: http://plugins.svn.wordpress.org/wp-paginate/I18n (check the version number for the correct file)
 	
 == Installation ==
 
