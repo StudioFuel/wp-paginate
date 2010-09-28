@@ -109,6 +109,8 @@ This allows you to use the `.wp-paginate-comments` styles, already in `wp-pagina
 
 = 1.2 =
 * Added RTL language support
+* Fixed comments pagination bug
+* Changed language domain name from wp_paginate to wp-paginate (this will affect translation file names)
 
 = 1.1.2 =
 * Fixed comment pagination bug (nested comments caused blank page)

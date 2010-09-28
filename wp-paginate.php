@@ -53,7 +53,7 @@ if (!class_exists('WPPaginate')) {
 		/**
 		 * @var string $localizationDomain Domain used for localization
 		 */
-		var $localizationDomain = 'wp_paginate';
+		var $localizationDomain = 'wp-paginate';
 
 		/**
 		 * @var string $pluginurl The url to this plugin
@@ -118,21 +118,9 @@ if (!class_exists('WPPaginate')) {
 					$pages = intval(ceil($wp_query->found_posts / $posts_per_page));
 				}
 				else {
-					global $post, $wpdb;
-					/*
-					 * Do not include nested comments
-					 * Thanks to jeffreyalew for the patch
-					 */ 
-					$comments = $wpdb->get_var("
-						SELECT COUNT(*)
-						FROM $wpdb->comments
-						WHERE comment_approved = '1'
-						AND comment_parent = '0'
-						AND comment_post_ID = $post->ID
-					");
 					$page = get_query_var('cpage');
 					$comments_per_page = get_option('comments_per_page');
-					$pages = intval(ceil($comments / $comments_per_page));
+					$pages = get_comment_pages_count();
 				}
 				$page = !empty($page) ? intval($page) : 1;
 			}
@@ -352,7 +340,7 @@ if (!class_exists('WPPaginate')) {
 		<tr valign="top">
 			<th scope="row"><?php _e('WP-Paginate CSS File:', $this->localizationDomain); ?></th>
 			<td><label for="css">
-				<input type="checkbox" id="css" name="css" <?php echo ($this->options['css'] === true) ? "checked='checked'" : ""; ?>/> <?php printf(__('Include the default stylesheet wp-paginate.css? WP-Paginate will first look for <code>wp-paginate.css</code> in your theme directory (<code>themes/%s</code>).', $this->localizationDomain), get_current_theme()); ?></label></td>
+				<input type="checkbox" id="css" name="css" <?php echo ($this->options['css'] === true) ? "checked='checked'" : ""; ?>/> <?php printf(__('Include the default stylesheet wp-paginate.css? WP-Paginate will first look for <code>wp-paginate.css</code> in your theme directory (<code>themes/%s</code>).', $this->localizationDomain), get_template()); ?></label></td>
 		</tr>
 		<tr valign="top">
 			<th scope="row"><?php _e('Page Range:', $this->localizationDomain); ?></th>
