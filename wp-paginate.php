@@ -4,7 +4,7 @@ Plugin Name: WP-Paginate
 Plugin URI: http://www.ericmmartin.com/projects/wp-paginate/
 Description: A simple and flexible pagination plugin for WordPress posts and comments.
 Author: Eric Martin
-Version: 1.2
+Version: 1.2.1
 Author URI: http://www.ericmmartin.com
 Revision: $Id$
 */
@@ -43,7 +43,7 @@ if (!class_exists('WPPaginate')) {
 		/**
 		 * @var string The plugin version
 		 */
-		var $version = '1.2';
+		var $version = '1.2.1';
 
 		/**
 		 * @var string The options string name for this plugin
@@ -211,7 +211,7 @@ if (!class_exists('WPPaginate')) {
 			}
 			wp_enqueue_style('wp-paginate', $css, false, $this->version, 'screen');
 
-			if (is_rtl()) {
+			if (function_exists('is_rtl') && is_rtl()) {
 				$name = "wp-paginate-rtl.css";
 				if (false !== @file_exists(TEMPLATEPATH . "/$name")) {
 					$css = get_template_directory_uri() . "/$name";

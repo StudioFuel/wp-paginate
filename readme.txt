@@ -4,7 +4,7 @@ Donate link: http://www.ericmmartin.com/donate/
 Tags: paginate, pagination, navigation, page, wp-paginate, comments, rtl, seo, usability
 Requires at least: 2.2.0 (2.7.0 for comments pagination)
 Tested up to: 3.0.1
-Stable tag: 1.2
+Stable tag: 1.2.1
 	
 WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
 
@@ -108,6 +108,9 @@ This allows you to use the `.wp-paginate-comments` styles, already in `wp-pagina
 2. The WP-Paginate admin settings page
 
 == Changelog ==
+
+= 1.2.1 =
+* Added is_rtl function check to prevent errors with older version of WordPress
 
 = 1.2 =
 * Added RTL language support
