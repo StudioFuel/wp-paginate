@@ -4,7 +4,7 @@ Plugin Name: WP-Paginate
 Plugin URI: http://www.ericmmartin.com/projects/wp-paginate/
 Description: A simple and flexible pagination plugin for WordPress posts and comments.
 Author: Eric Martin
-Version: 1.2.1
+Version: 1.2.2
 Author URI: http://www.ericmmartin.com
 Revision: $Id$
 */
@@ -43,7 +43,7 @@ if (!class_exists('WPPaginate')) {
 		/**
 		 * @var string The plugin version
 		 */
-		var $version = '1.2.1';
+		var $version = '1.2.2';
 
 		/**
 		 * @var string The options string name for this plugin
@@ -126,10 +126,10 @@ if (!class_exists('WPPaginate')) {
 			}
 
 			$prevlink = ($this->type === 'posts')
-				? get_pagenum_link($page - 1) 
+				? esc_url(get_pagenum_link($page - 1)) 
 				: get_comments_pagenum_link($page - 1);
 			$nextlink = ($this->type === 'posts')
-				? get_pagenum_link($page + 1) 
+				? esc_url(get_pagenum_link($page + 1)) 
 				: get_comments_pagenum_link($page + 1);
 
 			$output = stripslashes($before);
@@ -193,7 +193,7 @@ if (!class_exists('WPPaginate')) {
 		function paginate_loop($start, $max, $page = 0) {
 			$output = "";
 			for ($i = $start; $i <= $max; $i++) {
-				$p = ($this->type === 'posts') ? get_pagenum_link($i) : get_comments_pagenum_link($i);
+				$p = ($this->type === 'posts') ? esc_url(get_pagenum_link($i)) : get_comments_pagenum_link($i);
 				$output .= ($page == intval($i))
 					? "<li><span class='page current'>$i</span></li>"
 					: "<li><a href='$p' title='$i' class='page'>$i</a></li>";
