@@ -356,7 +356,7 @@ if (!class_exists('WPPaginate')) {
 			<th scope="row"><?php _e('Page Anchors:', $this->localizationDomain); ?></th>
 			<td>
 				<select name="anchor" id="anchor">
-				<?php for ($i=1; $i<=10; $i++) : ?>
+				<?php for ($i=0; $i<=10; $i++) : ?>
 					<option value="<?php echo $i; ?>" <?php echo ($i == $this->options['anchor']) ? "selected='selected'" : ""; ?>><?php echo $i; ?></option>
 				<?php endfor; ?>
 				</select>
