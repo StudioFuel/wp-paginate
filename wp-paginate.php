@@ -412,6 +412,7 @@ if (class_exists('WPPaginate')) {
  */
 function wp_paginate($args = false) {
 	global $wp_paginate;
+	$wp_paginate->type = 'posts';
 	return $wp_paginate->paginate($args);
 }
 
