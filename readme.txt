@@ -2,9 +2,9 @@
 Contributors: emartin24 
 Donate link: http://www.ericmmartin.com/donate/
 Tags: paginate, pagination, navigation, page, wp-paginate, comments, rtl, seo, usability
-Requires at least: 2.2.0 (2.7.0 for comments pagination)
-Tested up to: 3.0.1
-Stable tag: 1.2.2
+Requires at least: 2.6.0 (2.7.0 for comments pagination)
+Tested up to: 3.2.1
+Stable tag: 1.2.4
 	
 WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
 
@@ -29,13 +29,32 @@ Translations: http://plugins.svn.wordpress.org/wp-paginate/I18n (check the versi
 *Implement*
 
 For posts pagination:
-1) Open the theme files where you'd like pagination to be used. Usually this is the `loop.php` file. For older version of WordPress, you may need to update the `index.php`, `archive.php` and `search.php` files.
+1) Open the theme files where you'd like pagination to be used. Depending on your theme, this may be the `loop.php` file or the `index.php`, `archive.php` and `search.php` files. The `twentyeleven` theme places the pagination code in `functions.php` in the `twentyeleven_content_nav()` function.
 
 2) Replace your existing `previous_posts_link()` and `next_posts_link()` code block with the following:
 
 	<?php if(function_exists('wp_paginate')) {
 		wp_paginate();
 	} ?>
+
+For the `twentyeleven_content_nav` theme, the new function would look like:
+
+	function twentyeleven_content_nav( $nav_id ) {
+		global $wp_query;
+
+		if ( function_exists( 'wp_paginate' ) ) {
+			wp_paginate();
+		}
+		else {
+			if ( $wp_query->max_num_pages > 1 ) : ?>
+				<nav id="<?php echo $nav_id; ?>">
+					<h3 class="assistive-text"><?php _e( 'Post navigation', 'twentyeleven' ); ?></h3>
+					<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'twentyeleven' ) ); ?></div>
+					<div class="nav-next"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'twentyeleven' ) ); ?></div>
+				</nav><!-- #nav-above -->
+			<?php endif;
+		}
+	}
 
 
 For comments pagination:
@@ -64,7 +83,7 @@ For comments pagination:
 
 To 1.1.1+:
 
-* Update WP-Paginate settings, change `Before Markup` to <div class="navigation">
+* Update WP-Paginate settings, change `Before Markup` to `<div class="navigation">`
 * Update `wp-paginate.css`, change `.wp-paginate ol` to `.wp-paginate`
 
 == Frequently Asked Questions ==
@@ -95,7 +114,6 @@ Example (also applies to `wp_paginate_comments()`):
 	} ?>
 
 
-
 = How can I style the comments pagination differently than the posts pagination? =
 
 When calling `wp_paginate_comments()`, WP-Paginate adds an extra class to the `ol` element, `wp-paginate-comments`.
@@ -107,7 +125,22 @@ This allows you to use the `.wp-paginate-comments` styles, already in `wp-pagina
 1. An example of the WP-Paginate display using the default options and styling
 2. The WP-Paginate admin settings page
 
+
+== Upgrade Notice ==
+
+N/A
+
 == Changelog ==
+
+= 1.2.4 =
+* Ensure pagination of posts when wp_paginate() is called
+  Github pull request via whacao
+* Support loading on https pages (plugin now requires WordPress 2.6+)
+  Github pull request via hadvig 
+
+= 1.2.3 =
+* Fixed deprecated parameter to the WordPress add_options_page() function
+  Github pull request via alexwybraniec
 
 = 1.2.2 =
 * Fixed a XSS vulnerability reported by Andreas Schobel (@aschobel)
