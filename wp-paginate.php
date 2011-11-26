@@ -86,7 +86,7 @@ if (!class_exists('WPPaginate')) {
 			load_plugin_textdomain($this->localizationDomain, false, "$name/I18n/");
 
 			//"Constants" setup
-			$this->pluginurl = WP_PLUGIN_URL . "/$name/";
+			$this->pluginurl = plugins_url($name)."/";
 			$this->pluginpath = WP_PLUGIN_DIR . "/$name/";
 
 			//Initialize the options
