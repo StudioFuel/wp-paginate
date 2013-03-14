@@ -72,12 +72,7 @@ if (!class_exists('WPPaginate')) {
 		var $type = 'posts';
 
 		/**
-		 * PHP 4 Compatible Constructor
-		 */
-		function WPPaginate() {$this->__construct();}
-
-		/**
-		 * PHP 5 Constructor
+		 * Constructor
 		 */
 		function __construct() {
 			$name = dirname(plugin_basename(__FILE__));
