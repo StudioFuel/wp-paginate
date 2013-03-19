@@ -424,4 +424,3 @@ function wp_paginate_comments($args = false) {
  * The format of this plugin is based on the following plugin template:
  * http://pressography.com/plugins/wordpress-plugin-template/
  */
-?>
