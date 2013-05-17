@@ -130,7 +130,12 @@ if (!class_exists('WPPaginate')) {
 			$output = stripslashes($before);
 			if ($pages > 1) {
 				$output .= sprintf('<ol class="wp-paginate%s">', ($this->type === 'posts') ? '' : ' wp-paginate-comments');
-				$output .= sprintf('<li><span class="title">%s</span></li>', stripslashes($title));
+
+				$title = stripslashes($title);
+				if(!empty($title) || $title === '0') {
+					$output .= sprintf('<li><span class="title">%s</span></li>', $title);
+				}
+
 				$ellipsis = "<li><span class='gap'>...</span></li>";
 
 				if ($page > 1 && !empty($previouspage)) {
