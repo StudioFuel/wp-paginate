@@ -3,8 +3,10 @@ Contributors: emartin24
 Donate link: http://www.ericmmartin.com/donate/
 Tags: paginate, pagination, navigation, page, wp-paginate, comments, rtl, seo, usability
 Requires at least: 2.6.0 (2.7.0 for comments pagination)
-Tested up to: 3.2.1
-Stable tag: 1.2.4
+Tested up to: 3.9.1
+Stable tag: 1.2.5
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 	
 WP-Paginate is a simple and flexible pagination plugin which provides users with better navigation on your WordPress site.
 
@@ -29,33 +31,50 @@ Translations: http://plugins.svn.wordpress.org/wp-paginate/I18n (check the versi
 *Implement*
 
 For posts pagination:
-1) Open the theme files where you'd like pagination to be used. Depending on your theme, this may be the `loop.php` file or the `index.php`, `archive.php` and `search.php` files. The `twentyeleven` theme places the pagination code in `functions.php` in the `twentyeleven_content_nav()` function.
+* Open the theme files where you'd like pagination to be used. Depending on your theme, this could be in a number of files, such as `index.php`, `archive.php`, `categories.php`, `search.php`, `tag.php`, or the `functions.php` file(s).The `twentyeleven` theme places the pagination code in `functions.php` in the `twentyeleven_content_nav()` function.
 
-2) Replace your existing `previous_posts_link()` and `next_posts_link()` code block with the following:
+Examples:
+
+For the `twentytwelve` theme, in `index.php`, replace:
+
+	<?php twentytwelve_content_nav( 'nav-below' ); ?>
+
+With:
 
 	<?php if(function_exists('wp_paginate')) {
 		wp_paginate();
-	} ?>
-
-For the `twentyeleven_content_nav` theme, the new function would look like:
-
-	function twentyeleven_content_nav( $nav_id ) {
-		global $wp_query;
-
-		if ( function_exists( 'wp_paginate' ) ) {
-			wp_paginate();
-		}
-		else {
-			if ( $wp_query->max_num_pages > 1 ) : ?>
-				<nav id="<?php echo $nav_id; ?>">
-					<h3 class="assistive-text"><?php _e( 'Post navigation', 'twentyeleven' ); ?></h3>
-					<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'twentyeleven' ) ); ?></div>
-					<div class="nav-next"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'twentyeleven' ) ); ?></div>
-				</nav><!-- #nav-above -->
-			<?php endif;
-		}
 	}
+	else {
+		twentytwelve_content_nav( 'nav-below' );
+	}
+	?> 
 
+For the `twentythirteen` theme, in `index.php`, replace:
+
+	<?php twentythirteen_paging_nav(); ?>
+
+With:
+
+	<?php if(function_exists('wp_paginate')) {
+		wp_paginate();
+	}
+	else {
+		twentythirteen_paging_nav();
+	}
+	?> 
+
+For the `twentyfourteen` theme, in `index.php`, replace:
+
+	twentyfourteen_paging_nav();
+
+With:
+
+	if(function_exists('wp_paginate')) {
+		wp_paginate();
+	}
+	else {
+		twentyfourteen_paging_nav();
+	} 
 
 For comments pagination:
 1) Open the theme file(s) where you'd like comments pagination to be used. Usually this is the `comments.php` file.
@@ -131,6 +150,11 @@ This allows you to use the `.wp-paginate-comments` styles, already in `wp-pagina
 N/A
 
 == Changelog ==
+
+= 1.2.5 =
+* Remove PHP4 support to resolve PHP Strict warning
+  Github pull request via DeanMarkTaylor
+* Test with latest version of WordPress
 
 = 1.2.4 =
 * Ensure pagination of posts when wp_paginate() is called
