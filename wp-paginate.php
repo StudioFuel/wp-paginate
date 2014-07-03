@@ -130,7 +130,9 @@ if (!class_exists('WPPaginate')) {
 			$output = stripslashes($before);
 			if ($pages > 1) {
 				$output .= sprintf('<ol class="wp-paginate%s">', ($this->type === 'posts') ? '' : ' wp-paginate-comments');
-				$output .= sprintf('<li><span class="title">%s</span></li>', stripslashes($title));
+				if (strlen(stripslashes($title)) > 0) {
+					$output .= sprintf('<li><span class="title">%s</span></li>', stripslashes($title));
+				}
 				$ellipsis = "<li><span class='gap'>...</span></li>";
 
 				if ($page > 1 && !empty($previouspage)) {
@@ -424,4 +426,3 @@ function wp_paginate_comments($args = false) {
  * The format of this plugin is based on the following plugin template:
  * http://pressography.com/plugins/wordpress-plugin-template/
  */
-?>
