@@ -224,7 +224,7 @@ if (!class_exists('WPPaginate')) {
 				'first' => '1',
 				'last' => '',
 				'show' => 1000,
-				'class' => sprintf('wp-paginate%s', ($this->type === 'posts') ? '' : ' wp-paginate-comments'),
+				'class' => sprintf('wp-paginate-ex-%s', ($this->type === 'posts') ? '' : ' wp-paginate-ex-comments'),
 				'classactive' => 'active',
 				'classdisabled' => 'disabled',
 				'classprevious' => 'previous',
