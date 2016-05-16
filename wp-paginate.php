@@ -5,7 +5,7 @@ Plugin URI: http://www.studiofuel.com/wp-paginate/
 Description: A simple and flexible pagination plugin for WordPress posts and comments.
 Version: 2.0
 Author: Noah Cinquini, EX additions by Matthew Sigley
-Author URI: http://www.studiofuel.com
+Author URI: http://www.studiofuel.com, https://github.com/msigley
 */
 
 /*  Copyright 2014 Studio Fuel (http://www.studiofuel.com)
