@@ -44,7 +44,7 @@ if (!class_exists('WPPaginate')) {
 		/**
 		 * @var string The plugin version
 		 */
-		var $version = '1.3.1';
+		var $version = '2.0.0';
 
 		/**
 		 * @var string The options string name for this plugin
