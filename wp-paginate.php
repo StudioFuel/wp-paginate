@@ -1,15 +1,16 @@
 <?php
 /*
 Plugin Name: WP-Paginate
-Plugin URI: http://www.ericmmartin.com/projects/wp-paginate/
+Plugin URI: http://www.studiofuel.com/wp-paginate/
 Description: A simple and flexible pagination plugin for WordPress posts and comments.
-Author: Eric Martin
-Version: 1.2.5
-Author URI: http://www.ericmmartin.com
-Revision: $Id: wp-paginate.php 943040 2014-07-03 18:30:39Z emartin24 $
+Version: 2.0
+Author: Noah Cinquini, EX additions by Matthew Sigley
+Author URI: http://www.studiofuel.com
 */
 
-/*  Copyright 2014 Eric Martin (eric@ericmmartin.com)
+/*  Copyright 2014 Studio Fuel (http://www.studiofuel.com)
+
+    Plugin originally created by Eric Martin (http://www.ericmmartin.com)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -43,7 +44,7 @@ if (!class_exists('WPPaginate')) {
 		/**
 		 * @var string The plugin version
 		 */
-		var $version = '1.2.5';
+		var $version = '1.3.1';
 
 		/**
 		 * @var string The options string name for this plugin
@@ -185,23 +186,158 @@ if (!class_exists('WPPaginate')) {
 		}
 
 		/**
+		* Provides markup for a list of linked page numbers
+		*
+		* @param array           $options The options
+		* - **after**: `</div>` Markup to add after the pagination
+		* - **before**: `<div>` Markup to add before the pagination
+		* - **jumpback**: `(number of page being jumped to)` The label for the jump backward link
+		* - **jumpfwd**: `(number of page being jumped to)` The label for the jump forward link
+		* - **jumps**: `(half number of pages shown)` Number of pages to jump.
+		* - **label**: `Pages:` The label for the pagination list
+		* - **next**: `next` The label for the next button
+		* - **previous**: `previous` The label for the previous button
+		* - **first**: `1` The label for the first page button.
+		* - **last**: `(number of the last page)` The label for the last page button.
+		* - **show**: `1000` The maximum number of pages to show
+		* - **class**: `paging` The class applied to the ul
+		* - **classactive**: `active` The class applied to the currently active list item
+		* - **classdisabled**: `disabled` The class applied to any disabled list items
+		* - **classprevious**: `previous` The class applied to the previous list item
+		* - **classnext**: `next` The class applied to the next list items
+		* - **page**: `(paged query var from $wp_query)` The current page
+		* - **pages**: `(value calculated from $wp_query)` The total number of pages
+		* @return string The pagination markup
+		**/
+		function paginate_ex ( $options ) {
+			global $wp_query;
+			
+			$defaults = array(
+				'after' => '</div>',
+				'before' => '<div>',
+				'jumpback' => '',
+				'jumpfwd' => '',
+				'jumps' => false,
+				'label' => __('Pages:','wp_paginate'),
+				'next' => __('next','wp_paginate'),
+				'previous' => __('previous','wp_paginate'),
+				'first' => '1',
+				'last' => '',
+				'show' => 1000,
+				'class' => sprintf('wp-paginate%s', ($this->type === 'posts') ? '' : ' wp-paginate-comments'),
+				'classactive' => 'active',
+				'classdisabled' => 'disabled',
+				'classprevious' => 'previous',
+				'classnext' => 'next'
+			);
+			$options = array_merge($defaults, $options);
+			extract($options);
+			
+			if (!isset($page) && !isset($pages)) {
+				global $wp_query;
+
+				if ($this->type === 'posts') {
+					$page = get_query_var('paged');
+					$posts_per_page = intval(get_query_var('posts_per_page'));
+					$pages = intval(ceil($wp_query->found_posts / $posts_per_page));
+				}
+				else {
+					$page = get_query_var('cpage');
+					$comments_per_page = get_option('comments_per_page');
+					$pages = get_comment_pages_count();
+				}
+				$page = !empty($page) ? intval($page) : 1;
+			}
+			
+			if( empty($last) ) $last = $pages;
+			
+			$_ = array();
+			if ( $pages > 1 ) {
+				if ( $pages > $show ) $visible_pages = $show;
+				else $visible_pages = $pages;
+				if( empty($jumps) )
+					$jumps = ceil( $visible_pages / 2 );
+				$_[] = $before . $label;
+				$_[] = '<ul class="' . esc_attr($class) . '">';
+				if ( $page <= floor( $show / 2) ) {
+					$i = 1;
+				} else {
+					$i = $page - floor( $show / 2 );
+					$visible_pages = $page + floor( $show / 2 );
+					if ( $visible_pages > $pages ) $visible_pages = $pages;
+					if ( $i > 1 ) {
+						$link = $this->paginate_link(1);
+						$_[] = '<li class="first"><span><a href="' . $link . '">' . $first . '</a></span></li>';
+						$pagenum = ( $page - $jumps );
+						if ( $pagenum > 1 ) { //Only show jump back if different than first
+						$link = $this->paginate_link($pagenum);
+							if( empty($jumpback) )
+								$jumpback = $pagenum;
+							$_[] = '<li class="jumpback"><span><a href="' . $link . '">' . $jumpback . '</a></span></li>';
+						}
+					}
+				}
+				// Add previous button
+				if ( ! empty($previous) && $page > 1 ) {
+					$prev = $page-1;
+					$link = $this->paginate_link($prev);
+					$_[] = '<li class="' . esc_attr($classprevious) . '"><span><a href="' . $link . '" rel="prev">' . $previous . '</a></span></li>';
+				} else $_[] = '<li class="' . esc_attr($classprevious) . ' ' . esc_attr($classdisabled) . '"><span>' . $previous . '</span></li>';
+				// end previous button
+				while ( $i <= $visible_pages ) {
+					$link = $this->paginate_link($i);
+					if ( $i == $page ) $_[] = '<li class="' . esc_attr($classactive) . '"><span>' . $i . '</span></li>';
+					else $_[] = '<li><span><a href="' . $link . '">' . $i . '</a></span></li>';
+					$i++;
+				}
+				// Add next button
+				if ( ! empty($next) && $page < $pages) {
+					$pagenum = $page + 1;
+					$link = $this->paginate_link($pagenum);
+					$_[] = '<li class="' . esc_attr($classnext) . '"><span><a href="' . $link . '" rel="next">' . $next . '</a></span></li>';
+				} else $_[] = '<li class="' . esc_attr($classnext) . ' ' . esc_attr($classdisabled) . '"><span>' . $next . '</span></li>';
+				// end next button
+				if ( $pages > $visible_pages  ) {
+					$pagenum = ( $page + $jumps );
+					if ( $pagenum < $pages ) { //Only show jump forward if different than last
+						$link = $this->paginate_link($pagenum);
+						if( empty($jumpfwd) )
+								$jumpfwd = $pagenum;
+						$_[] = '<li class="jumpfwd"><span><a href="' . $link . '">' . $jumpfwd . '</a></span></li>';
+					}
+					$link = $this->paginate_link($pages);
+					$_[] = '<li class="last"><span><a href="' . $link . '">' . $last . '</a></span></li>';
+				}
+				$_[] = '</ul>';
+				$_[] = $after;
+			}
+			
+			echo join("\n", $_);
+		}
+
+		/**
 		 * Helper function for pagination which builds the page links.
 		 */
 		function paginate_loop($start, $max, $page = 0) {
 			$output = "";
 			for ($i = $start; $i <= $max; $i++) {
-				$p = ($this->type === 'posts') ? esc_url(get_pagenum_link($i)) : get_comments_pagenum_link($i);
+				$p = $this->paginate_link($i);
 				$output .= ($page == intval($i))
 					? "<li><span class='page current'>$i</span></li>"
 					: "<li><a href='$p' title='$i' class='page'>$i</a></li>";
 			}
 			return $output;
 		}
+		
+		function paginate_link($pagenum) {
+			return ($this->type === 'posts') ? esc_url(get_pagenum_link($pagenum)) : get_comments_pagenum_link($pagenum);
+		}
 
 		function wp_paginate_css() {
 			$name = "wp-paginate.css";
-			if (false !== @file_exists(TEMPLATEPATH . "/$name")) {
-				$css = get_template_directory_uri() . "/$name";
+
+			if (false !== @file_exists(STYLESHEETPATH . "/$name")) {
+				$css = get_stylesheet_directory_uri() . "/$name";
 			}
 			else {
 				$css = $this->pluginurl . $name;
@@ -210,8 +346,8 @@ if (!class_exists('WPPaginate')) {
 
 			if (function_exists('is_rtl') && is_rtl()) {
 				$name = "wp-paginate-rtl.css";
-				if (false !== @file_exists(TEMPLATEPATH . "/$name")) {
-					$css = get_template_directory_uri() . "/$name";
+				if (false !== @file_exists(STYLESHEETPATH . "/$name")) {
+					$css = get_stylesheet_directory_uri() . "/$name";
 				}
 				else {
 					$css = $this->pluginurl . $name;
@@ -375,22 +511,20 @@ if (!class_exists('WPPaginate')) {
 	</p>
 </form>
 <h2><?php _e('Need Support?', $this->localizationDomain); ?></h2>
-<p><?php printf(__('For questions, issues or feature requests, please post them in the %s and make sure to tag the post with wp-paginate.', $this->localizationDomain), '<a href="http://wordpress.org/tags/wp-paginate?forum_id=10#postform">WordPress Forum</a>'); ?></p>
-<h2><?php _e('Like To Contribute?', $this->localizationDomain); ?></h2>
+<p><?php printf(__('For questions, issues or feature requests, please post them in the %s and make sure to tag the post with wp-paginate.', $this->localizationDomain), '<a href="https://wordpress.org/support/plugin/wp-paginate">WordPress Forum</a>'); ?></p>
+<h2><?php _e('Want To Contribute?', $this->localizationDomain); ?></h2>
 <p><?php _e('If you would like to contribute, the following is a list of ways you can help:', $this->localizationDomain); ?></p>
 <ul>
 	<li>&raquo; <?php _e('Translate WP-Paginate into your language', $this->localizationDomain); ?></li>
 	<li>&raquo; <?php _e('Blog about or link to WP-Paginate so others can find out about it', $this->localizationDomain); ?></li>
 	<li>&raquo; <?php _e('Report issues, provide feedback, request features, etc.', $this->localizationDomain); ?></li>
-	<li>&raquo; <a href="http://wordpress.org/extend/plugins/wp-paginate/"><?php _e('Rate WP-Paginate on the WordPress Plugins Page', $this->localizationDomain); ?></a></li>
-	<li>&raquo; <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KUL9VQ6U5VYCE&lc=US&item_name=Eric%20Martin%20%28ericmmartin%2ecom%29&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"><?php _e('Make a donation', $this->localizationDomain); ?></a></li>
+	<li>&raquo; <a href="https://wordpress.org/support/view/plugin-reviews/wp-paginate"><?php _e('Review WP-Paginate on the WordPress Plugins Page', $this->localizationDomain); ?></a></li>
 </ul>
 <h2><?php _e('Other Links', $this->localizationDomain); ?></h2>
 <ul>
-	<li>&raquo; <a href="http://twitter.com/ericmmartin">@ericmmartin</a> on Twitter</li>
-	<li>&raquo; <a href="http://www.ericmmartin.com">EricMMartin.com</a></li>
-	<li>&raquo; <a href="http://www.ericmmartin.com/projects/smcf/">SimpleModal Contact Form (SMCF) - WordPress Plugin</a></li>
-	<li>&raquo; <a href="http://www.ericmmartin.com/projects/simplemodal-login/">SimpleModal Login - WordPress Plugin</a></li>
+	<li>&raquo; <a href='https://github.com/studiofuel/wp-paginate'>WP-Paginate</a> on GitHub</li>
+	<li>&raquo; <a href="http://www.studiofuel.com/simplemodal-contact-form-smcf/">SimpleModal Contact Form (SMCF) - WordPress Plugin</a></li>
+	<li>&raquo; <a href="http://www.studiofuel.com/simplemodal-login/">SimpleModal Login - WordPress Plugin</a></li>
 </ul>
 </div>
 
@@ -420,6 +554,24 @@ function wp_paginate_comments($args = false) {
 	global $wp_paginate;
 	$wp_paginate->type = 'comments';
 	return $wp_paginate->paginate($args);
+}
+
+/**
+ * Improved pagination function to use for posts
+ */
+function wp_paginate_ex($args = array()) {
+	global $wp_paginate;
+	$wp_paginate->type = 'posts';
+	return $wp_paginate->paginate_ex($args);
+}
+
+/**
+ * Improved pagination function to use for post comments
+ */
+function wp_paginate_comments_ex($args = array()) {
+	global $wp_paginate;
+	$wp_paginate->type = 'comments';
+	return $wp_paginate->paginate_ex($args);
 }
 
 /*
